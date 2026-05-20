@@ -1,4 +1,4 @@
-# 🎬 Trailer Analyst — Next.js
+# 🎬 PlotPoint Trailer Analyst — Next.js
 
 Enterprise-grade movie trailer analysis app — Next.js 14 App Router · TypeScript · Tailwind · Anthropic SDK.
 
