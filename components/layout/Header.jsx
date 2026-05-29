@@ -37,6 +37,7 @@ export function Header({
           gap: 8,
         }}
       >
+        {/* Logo */}
         <div className="flex items-center gap-2">
           <div
             style={{
@@ -53,19 +54,39 @@ export function Header({
             🎬
           </div>
 
-          <span
+          <div
             style={{
-              fontFamily: "'Bebas Neue',sans-serif",
-              fontSize: 19,
-              letterSpacing: 3,
-              background:
-                "linear-gradient(135deg,#fff,rgba(240,192,64,0.8))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
+              display: "flex",
+              flexDirection: "column",
+              lineHeight: 1,
             }}
           >
-            TRAILER ANALYST
-          </span>
+            <span
+              style={{
+                fontFamily: "'Bebas Neue',sans-serif",
+                fontSize: 22,
+                letterSpacing: 3,
+                background:
+                  "linear-gradient(135deg,#fff,rgba(240,192,64,0.85))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              PLOTPOINT
+            </span>
+
+            <span
+              style={{
+                fontSize: 8,
+                letterSpacing: 2,
+                color: "rgba(240,192,64,0.7)",
+                textTransform: "uppercase",
+                marginTop: 2,
+              }}
+            >
+              Movie Intelligence
+            </span>
+          </div>
 
           <span
             style={{
@@ -79,10 +100,11 @@ export function Header({
               textTransform: "uppercase",
             }}
           >
-            PRO
+            AI
           </span>
         </div>
 
+        {/* Navigation */}
         <nav className="flex gap-1">
           {TABS.map((t, i) => (
             <button
