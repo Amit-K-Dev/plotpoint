@@ -11,14 +11,13 @@ import { EmotionArc, KeyMoments, TheoryCard, HypeBreakdown } from "@/components/
 import { AIChat } from "@/components/chat/AIChat";
 import { ANALYSIS_SECTIONS, EXTRA_SECTIONS, MAX_IMAGES } from "@/lib/constants";
 
-
 const RESULT_TABS = ["📊 Overview", "🔮 Theories", "🤖 AI Chat"];
 
 export function AnalyzeTab() {
   const [title, setTitle]       = useState("");
   const [youtubeUrl, setUrl]    = useState("");
   const [notes, setNotes]       = useState("");
-  const [images, setImages]     = useState>([]);
+  const [images, setImages]     = useState([]);
   const [spoilerHidden, setSH]  = useState(false);
   const [resultTab, setRT]      = useState(0);
   const [copied, setCopied]     = useState(false);
@@ -27,10 +26,10 @@ export function AnalyzeTab() {
   const { addEntry } = useHistory();
   const { addEntry: addWL, isInWatchlist } = useWatchlist();
 
-  const fileRef = useRef<HTMLInputElement>(null);
+  const fileRef = useRef(null);
   const vid = youtubeUrl ? extractYouTubeId(youtubeUrl) : null;
 
-  const handleImages = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImages = useCallback(async (e) => {
     const files = Array.from(e.target.files ?? []);
     for (const f of files) {
       if (images.length >= MAX_IMAGES) break;
@@ -61,7 +60,18 @@ export function AnalyzeTab() {
 
   if (loading) return <LoadingPulse message={loadMsg} />;
 
-  if (!result) return <InputForm title={title} setTitle={setTitle} youtubeUrl={youtubeUrl} setUrl={setUrl} notes={notes} setNotes={setNotes} images={images} setImages={setImages} fileRef={fileRef} vid={vid} error={error} onAnalyze={handleAnalyze} onImages={handleImages} />;
+  if (!result) return (
+    <InputForm
+      title={title} setTitle={setTitle}
+      youtubeUrl={youtubeUrl} setUrl={setUrl}
+      notes={notes} setNotes={setNotes}
+      images={images} setImages={setImages}
+      fileRef={fileRef} vid={vid}
+      error={error}
+      onAnalyze={handleAnalyze}
+      onImages={handleImages}
+    />
+  );
 
   return (
     <div style={{ animation: "fadeUp 0.5s ease forwards" }}>
@@ -91,7 +101,9 @@ export function AnalyzeTab() {
           {result.comps && (
             <div className="flex flex-wrap gap-1">
               <span style={{ fontSize: 10, color: "rgba(255,255,255,0.28)" }}>Like:</span>
-              {result.comps.map((c, i) => <span key={i} style={{ background: "rgba(240,192,64,0.11)", border: "1px solid rgba(240,192,64,0.22)", borderRadius: 5, padding: "2px 7px", fontSize: 10, color: "rgba(240,192,64,0.75)" }}>{c}</span>)}
+              {result.comps.map((c, i) => (
+                <span key={i} style={{ background: "rgba(240,192,64,0.11)", border: "1px solid rgba(240,192,64,0.22)", borderRadius: 5, padding: "2px 7px", fontSize: 10, color: "rgba(240,192,64,0.75)" }}>{c}</span>
+              ))}
             </div>
           )}
         </div>
@@ -115,11 +127,11 @@ export function AnalyzeTab() {
         <>
           <EmotionArc arc={result.emotion_arc} />
           <KeyMoments moments={result.key_moments} />
-          {EXTRA_SECTIONS.map((s) => result[s.key as keyof AnalysisResult] && (
-            <SectionCard key={s.key} icon={s.icon} label={s.label} content={result[s.key as keyof AnalysisResult] as string} />
+          {EXTRA_SECTIONS.map((s) => result[s.key] && (
+            <SectionCard key={s.key} icon={s.icon} label={s.label} content={result[s.key]} />
           ))}
-          {ANALYSIS_SECTIONS.map((s) => result[s.key as keyof AnalysisResult] && (
-            <SectionCard key={s.key} icon={s.icon} label={s.label} content={result[s.key as keyof AnalysisResult] as string} blurred={spoilerHidden && ["narrative", "characters"].includes(s.key)} />
+          {ANALYSIS_SECTIONS.map((s) => result[s.key] && (
+            <SectionCard key={s.key} icon={s.icon} label={s.label} content={result[s.key]} blurred={spoilerHidden && ["narrative", "characters"].includes(s.key)} />
           ))}
           {result.verdict && <SectionCard icon="⭐" label="Final Verdict" content={result.verdict} />}
         </>
@@ -145,17 +157,7 @@ export function AnalyzeTab() {
 }
 
 // ─── Input Form Sub-component ──────────────────────────────────────────────
-function InputForm({ title, setTitle, youtubeUrl, setUrl, notes, setNotes, images, setImages, fileRef, vid, error, onAnalyze, onImages }: {
-  title; setTitle: (v) => void;
-  youtubeUrl; setUrl: (v) => void;
-  notes; setNotes: (v) => void;
-  images: Array<{ data; type; name: string }>;
-  setImages: React.Dispatch<React.SetStateAction<typeof images>>;
-  fileRef: React.RefObject<HTMLInputElement | null>;
-  vid: string | null; error: string | null;
-  onAnalyze: () => void;
-  onImages: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}) {
+function InputForm({ title, setTitle, youtubeUrl, setUrl, notes, setNotes, images, setImages, fileRef, vid, error, onAnalyze, onImages }) {
   return (
     <div>
       <div className="text-center mb-6">
@@ -183,7 +185,9 @@ function InputForm({ title, setTitle, youtubeUrl, setUrl, notes, setNotes, image
         )}
 
         <div className="mb-4">
-          <label style={{ display: "block", fontSize: 10, letterSpacing: 3, color: "rgba(240,192,64,0.65)", textTransform: "uppercase", marginBottom: 7 }}>Screenshots <span style={{ textTransform: "none", letterSpacing: 0, color: "rgba(255,255,255,0.22)" }}>(up to {MAX_IMAGES})</span></label>
+          <label style={{ display: "block", fontSize: 10, letterSpacing: 3, color: "rgba(240,192,64,0.65)", textTransform: "uppercase", marginBottom: 7 }}>
+            Screenshots <span style={{ textTransform: "none", letterSpacing: 0, color: "rgba(255,255,255,0.22)" }}>(up to {MAX_IMAGES})</span>
+          </label>
           <div onClick={() => fileRef.current?.click()} style={{ border: "1.5px dashed rgba(255,255,255,0.13)", borderRadius: 10, padding: "16px", textAlign: "center", cursor: "pointer", background: "rgba(255,255,255,0.02)" }}>
             <div style={{ fontSize: 20, marginBottom: 4 }}>🎞️</div>
             <p style={{ margin: 0, color: "rgba(255,255,255,0.3)", fontSize: 12 }}>Click to upload trailer frames</p>
@@ -202,12 +206,16 @@ function InputForm({ title, setTitle, youtubeUrl, setUrl, notes, setNotes, image
         </div>
 
         <div className="mb-5">
-          <label style={{ display: "block", fontSize: 10, letterSpacing: 3, color: "rgba(240,192,64,0.65)", textTransform: "uppercase", marginBottom: 7 }}>Notes <span style={{ textTransform: "none", letterSpacing: 0, color: "rgba(255,255,255,0.22)" }}>(optional)</span></label>
+          <label style={{ display: "block", fontSize: 10, letterSpacing: 3, color: "rgba(240,192,64,0.65)", textTransform: "uppercase", marginBottom: 7 }}>
+            Notes <span style={{ textTransform: "none", letterSpacing: 0, color: "rgba(255,255,255,0.22)" }}>(optional)</span>
+          </label>
           <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} placeholder="What stood out? Specific aspects to focus on?"
             style={{ width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 10, padding: "10px 13px", color: "white", fontSize: 13, resize: "vertical", outline: "none", fontFamily: "'DM Sans',sans-serif", lineHeight: 1.6 }} />
         </div>
 
-        {error && <div style={{ background: "rgba(224,80,80,0.14)", border: "1px solid rgba(224,80,80,0.28)", borderRadius: 8, padding: "9px 13px", marginBottom: 14, color: "#ff9090", fontSize: 13 }}>{error}</div>}
+        {error && (
+          <div style={{ background: "rgba(224,80,80,0.14)", border: "1px solid rgba(224,80,80,0.28)", borderRadius: 8, padding: "9px 13px", marginBottom: 14, color: "#ff9090", fontSize: 13 }}>{error}</div>
+        )}
 
         <button onClick={onAnalyze} style={{ width: "100%", padding: "14px", background: "linear-gradient(135deg,#f0c040,#e09020)", border: "none", borderRadius: 12, color: "#1a1000", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3 }}>
           🎬 ANALYZE THIS TRAILER
@@ -217,14 +225,14 @@ function InputForm({ title, setTitle, youtubeUrl, setUrl, notes, setNotes, image
   );
 }
 
-function buildReport(title, r: AnalysisResult): string {
+function buildReport(title, r) {
   return [
     `🎬 TRAILER ANALYSIS: ${title}`,
     `Score: ${r.score}/10  Hype: ${r.hype_score}/100`,
     `"${r.tagline}"`,
     `Comparables: ${r.comps?.join(", ")}`,
     "",
-    ...ANALYSIS_SECTIONS.filter((s) => r[s.key as keyof AnalysisResult]).map((s) => `${s.icon} ${s.label}\n${r[s.key as keyof AnalysisResult]}`),
+    ...ANALYSIS_SECTIONS.filter((s) => r[s.key]).map((s) => `${s.icon} ${s.label}\n${r[s.key]}`),
     "",
     `🔮 TOP THEORY`,
     r.theories?.[0] ? `${r.theories[0].title}: ${r.theories[0].description}` : "N/A",
