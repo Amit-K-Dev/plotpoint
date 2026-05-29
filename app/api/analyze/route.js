@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenAI } from "@google/genai";
 import { ANALYSIS_SYSTEM_PROMPT } from "@/lib/prompts";
 import { safeParseJSON } from "@/lib/utils";
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
 });
 
 export async function POST(req) {
@@ -19,40 +19,27 @@ export async function POST(req) {
       );
     }
 
-    const textParts = [
-      title && `Movie Title: ${title}`,
-      youtubeUrl && `Trailer URL: ${youtubeUrl}`,
-      notes && `Additional Notes: ${notes}`,
-      images && images.length
-        ? `${images.length} trailer screenshot(s) attached.`
-        : null,
-    ]
-      .filter(Boolean)
-      .join("\n\n");
+    const prompt = `
+${ANALYSIS_SYSTEM_PROMPT}
 
-    const content = [
-      {
-        type: "text",
-        text: textParts,
-      },
-    ];
+Movie Title: ${title || "Unknown"}
 
-    const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 4000,
-      system: ANALYSIS_SYSTEM_PROMPT,
-      messages: [
-        {
-          role: "user",
-          content,
-        },
-      ],
+Trailer URL:
+${youtubeUrl || "N/A"}
+
+Notes:
+${notes || "N/A"}
+
+Attached Images:
+${images?.length || 0}
+`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
     });
 
-    const raw = response.content
-      .filter((b) => b.type === "text")
-      .map((b) => b.text)
-      .join("");
+    const raw = response.text;
 
     const parsed = safeParseJSON(raw);
 
@@ -68,12 +55,8 @@ export async function POST(req) {
     console.error("[/api/analyze]", err);
 
     return NextResponse.json(
-      {
-        error: "Internal server error",
-      },
-      {
-        status: 500,
-      }
+      { error: "Internal server error" },
+      { status: 500 }
     );
   }
 }
