@@ -1,54 +1,53 @@
 import { NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenAI } from "@google/genai";
 import { CHAT_SYSTEM_PROMPT } from "@/lib/prompts";
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
 });
 
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { question, history, analysisContext, movieTitle } = body;
 
-    if (!question || !question.trim()) {
+    const {
+      question,
+      history,
+      analysisContext,
+      movieTitle,
+    } = body;
+
+    if (!question?.trim()) {
       return NextResponse.json(
         { error: "Question is required." },
         { status: 400 }
       );
     }
 
-    const systemWithContext = `${CHAT_SYSTEM_PROMPT}
+    const prompt = `
+${CHAT_SYSTEM_PROMPT}
 
-Movie: ${movieTitle || "Unknown"}
+Movie:
+${movieTitle || "Unknown"}
 
-Full Analysis Context:
-${JSON.stringify(analysisContext || {}, null, 2)}`;
+Analysis Context:
+${JSON.stringify(analysisContext || {}, null, 2)}
 
-    const messages = [
-      ...(history || []).map((m) => ({
-        role: m.role,
-        content: m.content,
-      })),
-      {
-        role: "user",
-        content: question,
-      },
-    ];
+Conversation History:
+${JSON.stringify(history || [], null, 2)}
 
-    const message = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 700,
-      system: systemWithContext,
-      messages,
+User Question:
+${question}
+`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
     });
 
-    const reply = message.content
-      .filter((b) => b.type === "text")
-      .map((b) => b.text)
-      .join("");
-
-    return NextResponse.json({ reply });
+    return NextResponse.json({
+      reply: response.text,
+    });
   } catch (err) {
     console.error("[/api/chat]", err);
 
