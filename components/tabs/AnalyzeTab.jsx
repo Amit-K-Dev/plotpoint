@@ -161,7 +161,7 @@ function InputForm({ title, setTitle, youtubeUrl, setUrl, notes, setNotes, image
   return (
     <div>
       <div className="text-center mb-6">
-        <div style={{ fontSize: 10, letterSpacing: 5, color: "rgba(240,192,64,0.55)", textTransform: "uppercase", marginBottom: 10 }}AI-Powered Movie Intelligence</div>
+        <div style={{ fontSize: 10, letterSpacing: 5, color: "rgba(240,192,64,0.55)", textTransform: "uppercase", marginBottom: 10 }}>AI-Powered Movie Intelligence</div>
         <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(34px,7vw,62px)", margin: "0 0 8px", letterSpacing: 4, lineHeight: 1, background: "linear-gradient(135deg,#fff 30%,rgba(240,192,64,0.8) 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Predict Plots. Discover Clues. Track Hype.</h1>
         <p style={{ color: "rgba(255,255,255,0.3)", margin: 0, fontSize: 13, fontWeight: 300 }}>Trailer Analysis · Plot Predictions · Fan Theories · AI Insights</p>
       </div>
