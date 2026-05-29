@@ -1,7 +1,6 @@
 "use client";
 
 import { useLocalStorage } from "./useLocalStorage";
-
 import { STORAGE_KEYS, MAX_HISTORY } from "@/lib/constants";
 
 export function useHistory() {
@@ -10,12 +9,16 @@ export function useHistory() {
     []
   );
 
-  const addEntry = (entry: Omit<HistoryEntry, "id" | "createdAt">) => {
+  const addEntry = (entry) => {
     setHistory((prev) =>
-      [{ ...entry, id: Date.now(), createdAt: Date.now() }, ...prev].slice(
-        0,
-        MAX_HISTORY
-      )
+      [
+        {
+          ...entry,
+          id: Date.now(),
+          createdAt: Date.now(),
+        },
+        ...prev,
+      ].slice(0, MAX_HISTORY)
     );
   };
 
@@ -23,7 +26,14 @@ export function useHistory() {
     setHistory((prev) => prev.filter((h) => h.id !== id));
   };
 
-  const clearAll = () => setHistory([]);
+  const clearAll = () => {
+    setHistory([]);
+  };
 
-  return { history, addEntry, removeEntry, clearAll };
+  return {
+    history,
+    addEntry,
+    removeEntry,
+    clearAll,
+  };
 }
