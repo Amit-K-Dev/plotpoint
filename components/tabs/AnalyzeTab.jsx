@@ -15,6 +15,7 @@ import {
   PredictionCenter,
   StrengthWeakness,
 HiddenClues,
+CharacterPredictions,
 } from "@/components/analysis";
 import { AIChat } from "@/components/chat/AIChat";
 import { ANALYSIS_SECTIONS, EXTRA_SECTIONS, MAX_IMAGES } from "@/lib/constants";
@@ -136,6 +137,10 @@ export function AnalyzeTab() {
     />
 
 <HiddenClues clues={result.hidden_clues} />
+
+<CharacterPredictions
+  predictions={result.character_predictions}
+/>
   </>
 )}
 
