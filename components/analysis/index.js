@@ -5,3 +5,4 @@ export { HypeBreakdown } from "./HypeBreakdown";
 export * from "./PredictionCenter";
 export * from "./StrengthWeakness";
 export * from "./HiddenClues";
+export * from "./CharacterPredictions";
