@@ -10,6 +10,7 @@ import { LoadingPulse, ScoreRing, SectionCard } from "@/components/ui";
 import { EmotionArc, KeyMoments, TheoryCard, HypeBreakdown } from "@/components/analysis";
 import { AIChat } from "@/components/chat/AIChat";
 import { ANALYSIS_SECTIONS, EXTRA_SECTIONS, MAX_IMAGES } from "@/lib/constants";
+import { PredictionCenter } from "@/components/analysis";
 
 const RESULT_TABS = ["📊 Overview", "🔮 Theories", "🤖 AI Chat"];
 
@@ -114,7 +115,13 @@ export function AnalyzeTab() {
         </div>
       </div>
 
-      {result.hype_breakdown && <HypeBreakdown breakdown={result.hype_breakdown} />}
+      {result.hype_breakdown && (
+  <HypeBreakdown breakdown={result.hype_breakdown} />
+)}
+
+{result.prediction_center && (
+  <PredictionCenter data={result.prediction_center} />
+)}
 
       {/* Result Tabs */}
       <div className="flex gap-1.5 mb-3">
