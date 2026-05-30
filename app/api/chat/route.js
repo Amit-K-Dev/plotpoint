@@ -1,10 +1,6 @@
 import { NextResponse } from "next/server";
-import { GoogleGenAI } from "@google/genai";
+import { generateWithFallback } from "@/lib/ai-provider";
 import { CHAT_SYSTEM_PROMPT } from "@/lib/prompts";
-
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
 
 export async function POST(req) {
   try {
@@ -12,12 +8,12 @@ export async function POST(req) {
 
     const {
       question,
-      history,
-      analysisContext,
-      movieTitle,
+      history = [],
+      analysisContext = {},
+      movieTitle = "Unknown",
     } = body;
 
-    if (!question?.trim()) {
+    if (!question || !question.trim()) {
       return NextResponse.json(
         { error: "Question is required." },
         { status: 400 }
@@ -25,35 +21,37 @@ export async function POST(req) {
     }
 
     const prompt = `
-${CHAT_SYSTEM_PROMPT}
-
 Movie:
-${movieTitle || "Unknown"}
+${movieTitle}
 
 Analysis Context:
-${JSON.stringify(analysisContext || {}, null, 2)}
+${JSON.stringify(analysisContext, null, 2)}
 
 Conversation History:
-${JSON.stringify(history || [], null, 2)}
+${JSON.stringify(history, null, 2)}
 
 User Question:
 ${question}
 `;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: prompt,
+    const reply = await generateWithFallback({
+      systemPrompt: CHAT_SYSTEM_PROMPT,
+      prompt,
     });
 
     return NextResponse.json({
-      reply: response.text,
+      reply,
     });
   } catch (err) {
     console.error("[/api/chat]", err);
 
     return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
+      {
+        error: "Internal server error",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }
