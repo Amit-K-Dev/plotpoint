@@ -3,12 +3,24 @@
 export function PredictionCenter({ data }) {
   if (!data) return null;
 
-  const confidenceColor =
-    data.confidence === "High"
-      ? "#4ade80"
-      : data.confidence === "Medium"
-      ? "#f0c040"
-      : "#f87171";
+  const cards = [
+    {
+      label: "IMDb",
+      value: `${data.imdb_prediction}/10`,
+    },
+    {
+      label: "RT Critics",
+      value: `${data.rt_critics}%`,
+    },
+    {
+      label: "RT Audience",
+      value: `${data.rt_audience}%`,
+    },
+    {
+      label: "Awards",
+      value: data.awards_chance,
+    },
+  ];
 
   return (
     <div
@@ -16,152 +28,70 @@ export function PredictionCenter({ data }) {
         background: "rgba(255,255,255,0.04)",
         border: "1px solid rgba(255,255,255,0.08)",
         borderRadius: 18,
-        padding: 20,
-        marginBottom: 14,
+        padding: 18,
+        marginBottom: 12,
       }}
     >
-      <div
+      <h3
         style={{
-          fontSize: 11,
+          color: "#f0c040",
           letterSpacing: 3,
-          color: "rgba(240,192,64,0.75)",
-          textTransform: "uppercase",
+          fontSize: 13,
           marginBottom: 16,
         }}
       >
-        🏆 Prediction Center
+        🔮 PREDICTION CENTER
+      </h3>
+
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        {cards.map((c) => (
+          <div
+            key={c.label}
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              borderRadius: 12,
+              padding: 12,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 11,
+                color: "rgba(255,255,255,0.45)",
+              }}
+            >
+              {c.label}
+            </div>
+
+            <div
+              style={{
+                color: "#fff",
+                fontWeight: 700,
+                marginTop: 4,
+              }}
+            >
+              {c.value}
+            </div>
+          </div>
+        ))}
       </div>
 
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2,minmax(0,1fr))",
-          gap: 12,
+          color: "rgba(255,255,255,0.75)",
+          fontSize: 13,
         }}
       >
-        <PredictionItem
-          label="IMDb"
-          value={`${data.imdb_prediction}/10`}
-          color="#f0c040"
-        />
-
-        <PredictionItem
-          label="RT Critics"
-          value={`${data.rt_critics}%`}
-          color="#60b0f0"
-        />
-
-        <PredictionItem
-          label="RT Audience"
-          value={`${data.rt_audience}%`}
-          color="#4ade80"
-        />
-
-        <PredictionItem
-          label="Awards"
-          value={data.awards_chance}
-          color="#c084fc"
-        />
+        <strong>Box Office:</strong> {data.box_office}
       </div>
 
       <div
         style={{
-          marginTop: 14,
-          padding: 12,
-          borderRadius: 10,
-          background: "rgba(255,255,255,0.03)",
-          border: "1px solid rgba(255,255,255,0.06)",
+          marginTop: 10,
+          color: "#60b0f0",
+          fontSize: 12,
         }}
       >
-        <div
-          style={{
-            fontSize: 10,
-            color: "rgba(255,255,255,0.35)",
-            letterSpacing: 2,
-            textTransform: "uppercase",
-            marginBottom: 4,
-          }}
-        >
-          Box Office Prediction
-        </div>
-
-        <div
-          style={{
-            color: "#f0c040",
-            fontFamily: "'Bebas Neue',sans-serif",
-            fontSize: 24,
-            letterSpacing: 1,
-          }}
-        >
-          {data.box_office}
-        </div>
-      </div>
-
-      <div
-        style={{
-          marginTop: 12,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <span
-          style={{
-            fontSize: 11,
-            color: "rgba(255,255,255,0.45)",
-          }}
-        >
-          Confidence Level
-        </span>
-
-        <span
-          style={{
-            background: `${confidenceColor}22`,
-            border: `1px solid ${confidenceColor}55`,
-            color: confidenceColor,
-            borderRadius: 999,
-            padding: "4px 10px",
-            fontSize: 11,
-          }}
-        >
-          {data.confidence}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function PredictionItem({ label, value, color }) {
-  return (
-    <div
-      style={{
-        background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(255,255,255,0.06)",
-        borderRadius: 10,
-        padding: 12,
-      }}
-    >
-      <div
-        style={{
-          fontSize: 10,
-          color: "rgba(255,255,255,0.35)",
-          letterSpacing: 2,
-          textTransform: "uppercase",
-          marginBottom: 4,
-        }}
-      >
-        {label}
-      </div>
-
-      <div
-        style={{
-          fontFamily: "'Bebas Neue',sans-serif",
-          fontSize: 24,
-          color,
-          letterSpacing: 1,
-        }}
-      >
-        {value}
+        Confidence: {data.confidence}
       </div>
     </div>
   );
