@@ -1,11 +1,7 @@
 import { NextResponse } from "next/server";
-import { GoogleGenAI } from "@google/genai";
+import { generateWithFallback } from "@/lib/ai-provider";
 import { ANALYSIS_SYSTEM_PROMPT } from "@/lib/prompts";
 import { safeParseJSON } from "@/lib/utils";
-
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
 
 export async function POST(req) {
   try {
@@ -34,12 +30,10 @@ Attached Images:
 ${images?.length || 0}
 `;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: prompt,
-    });
-
-    const raw = response.text;
+    const raw = await generateWithFallback({
+  prompt: textParts,
+  systemPrompt: ANALYSIS_SYSTEM_PROMPT,
+});
 
     const parsed = safeParseJSON(raw);
 
