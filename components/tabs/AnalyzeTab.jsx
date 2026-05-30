@@ -126,9 +126,14 @@ export function AnalyzeTab() {
 )}
 
 {result.prediction_center && (
-  <PredictionCenter data={result.prediction_center} />
+  <>
+    <PredictionCenter data={result.prediction_center} />
 
-<StrengthWeakness strengths={result.strengths} weaknesses={result.weaknesses} />
+    <StrengthWeakness
+      strengths={result.strengths}
+      weaknesses={result.weaknesses}
+    />
+  </>
 )}
 
 
