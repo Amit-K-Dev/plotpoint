@@ -6,19 +6,29 @@ import { safeParseJSON } from "@/lib/utils";
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { title, youtubeUrl, notes, images } = body;
+
+    const {
+      title,
+      youtubeUrl,
+      notes,
+      images,
+    } = body;
 
     if (!title && !youtubeUrl && !(images && images.length)) {
       return NextResponse.json(
-        { error: "Provide a movie title, YouTube URL, or screenshots." },
-        { status: 400 }
+        {
+          error:
+            "Provide a movie title, YouTube URL, or screenshots.",
+        },
+        {
+          status: 400,
+        }
       );
     }
 
     const prompt = `
-${ANALYSIS_SYSTEM_PROMPT}
-
-Movie Title: ${title || "Unknown"}
+Movie Title:
+${title || "Unknown"}
 
 Trailer URL:
 ${youtubeUrl || "N/A"}
@@ -31,16 +41,22 @@ ${images?.length || 0}
 `;
 
     const raw = await generateWithFallback({
-  prompt: textParts,
-  systemPrompt: ANALYSIS_SYSTEM_PROMPT,
-});
+      prompt,
+      systemPrompt: ANALYSIS_SYSTEM_PROMPT,
+    });
 
     const parsed = safeParseJSON(raw);
 
     if (!parsed) {
+      console.error("Failed JSON:", raw);
+
       return NextResponse.json(
-        { error: "Failed to parse analysis response." },
-        { status: 500 }
+        {
+          error: "Failed to parse analysis response.",
+        },
+        {
+          status: 500,
+        }
       );
     }
 
@@ -49,8 +65,12 @@ ${images?.length || 0}
     console.error("[/api/analyze]", err);
 
     return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
+      {
+        error: "Internal server error",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }
