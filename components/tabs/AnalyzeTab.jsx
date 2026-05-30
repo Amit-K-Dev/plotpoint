@@ -130,8 +130,7 @@ export function AnalyzeTab() {
 
 <StrengthWeakness
   strengths={result.strengths}
-  weaknesses={result.weaknesses}
-/>
+  weaknesses={result.weaknesses} />
 )}
 
 
