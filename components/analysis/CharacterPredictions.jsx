@@ -1,69 +1,86 @@
 "use client";
 
-export function CharacterPredictions({ predictions = [] }) {
+export function CharacterPredictions({
+  predictions = [],
+}) {
   if (!predictions.length) return null;
 
   return (
     <div
       style={{
-        background: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: 18,
-        padding: 20,
         marginBottom: 14,
       }}
     >
-      <div
+      <h3
         style={{
-          fontSize: 11,
-          letterSpacing: 3,
           color: "#c084fc",
-          textTransform: "uppercase",
-          marginBottom: 14,
+          letterSpacing: 3,
+          fontSize: 13,
+          marginBottom: 12,
         }}
       >
-        🎭 Character Fate Predictor
-      </div>
+        🎭 CHARACTER PREDICTIONS
+      </h3>
 
       {predictions.map((p, i) => (
         <div
           key={i}
           style={{
-            marginBottom: 14,
-            paddingBottom: 14,
-            borderBottom:
-              i !== predictions.length - 1
-                ? "1px solid rgba(255,255,255,0.06)"
-                : "none",
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            borderRadius: 14,
+            padding: 14,
+            marginBottom: 10,
           }}
         >
           <div
-            className="flex justify-between items-center"
-            style={{ marginBottom: 6 }}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: 8,
+            }}
           >
-            <span
+            <div
               style={{
-                color: "white",
-                fontWeight: 600,
+                color: "#fff",
+                fontWeight: 700,
               }}
             >
               {p.character}
-            </span>
+            </div>
 
-            <span
+            <div
               style={{
                 color: "#c084fc",
                 fontSize: 12,
               }}
             >
               {p.chance}%
-            </span>
+            </div>
           </div>
 
           <div
             style={{
-              color: "#f0c040",
-              marginBottom: 4,
+              height: 5,
+              background: "rgba(255,255,255,0.08)",
+              borderRadius: 999,
+              overflow: "hidden",
+              marginBottom: 10,
+            }}
+          >
+            <div
+              style={{
+                width: `${p.chance}%`,
+                height: "100%",
+                background: "#c084fc",
+              }}
+            />
+          </div>
+
+          <div
+            style={{
+              color: "rgba(255,255,255,0.8)",
+              marginBottom: 8,
               fontSize: 13,
             }}
           >
@@ -72,7 +89,7 @@ export function CharacterPredictions({ predictions = [] }) {
 
           <div
             style={{
-              color: "rgba(255,255,255,0.6)",
+              color: "rgba(255,255,255,0.55)",
               fontSize: 12,
               lineHeight: 1.6,
             }}
