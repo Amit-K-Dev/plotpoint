@@ -7,3 +7,4 @@ export { PredictionCenter } from "./PredictionCenter";
 export { StrengthWeakness } from "./StrengthWeakness";
 export { HiddenClues } from "./HiddenClues";
 export { CharacterPredictions } from "./CharacterPredictions";
+export { ForecastBoard } from "./ForecastBoard";
