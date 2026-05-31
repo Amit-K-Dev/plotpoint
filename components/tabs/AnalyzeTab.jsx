@@ -18,6 +18,7 @@ import {
   CharacterPredictions,
   ForecastBoard,
 WatchRecommendation,
+AwardsForecast,
 } from "@/components/analysis";
 import { AIChat } from "@/components/chat/AIChat";
 import { ANALYSIS_SECTIONS, EXTRA_SECTIONS, MAX_IMAGES } from "@/lib/constants";
@@ -128,6 +129,10 @@ export function AnalyzeTab() {
 
 <WatchRecommendation
   data={result.watch_recommendation}
+/>
+
+<AwardsForecast
+  data={result.awards_forecast}
 />
 
 <ForecastBoard
