@@ -127,22 +127,6 @@ export function AnalyzeTab() {
   <HypeBreakdown breakdown={result.hype_breakdown} />
 )}
 
-{result.prediction_center && (
-  <>
-    <PredictionCenter data={result.prediction_center} />
-
-    <StrengthWeakness
-      strengths={result.strengths}
-      weaknesses={result.weaknesses}
-    />
-
-<HiddenClues clues={result.hidden_clues} />
-
-<CharacterPredictions
-  predictions={result.character_predictions}
-/>
-  </>
-)}
 
 
       {/* Result Tabs */}
@@ -166,6 +150,10 @@ export function AnalyzeTab() {
 
 <HiddenClues
   clues={result.hidden_clues}
+/>
+
+<CharacterPredictions
+  predictions={result.character_predictions}
 />
 
           <EmotionArc arc={result.emotion_arc} />
