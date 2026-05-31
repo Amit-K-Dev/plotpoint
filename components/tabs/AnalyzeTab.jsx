@@ -154,6 +154,20 @@ export function AnalyzeTab() {
 
       {resultTab === 0 && (
         <>
+
+<PredictionCenter
+  data={result.prediction_center}
+/>
+
+<StrengthWeakness
+  strengths={result.strengths}
+  weaknesses={result.weaknesses}
+/>
+
+<HiddenClues
+  clues={result.hidden_clues}
+/>
+
           <EmotionArc arc={result.emotion_arc} />
           <KeyMoments moments={result.key_moments} />
           {EXTRA_SECTIONS.map((s) => result[s.key] && (
