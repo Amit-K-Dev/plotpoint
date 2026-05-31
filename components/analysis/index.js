@@ -11,3 +11,4 @@ export { ForecastBoard } from "./ForecastBoard";
 export { WatchRecommendation } from "./WatchRecommendation";
 export { AwardsForecast } from "./AwardsForecast";
 export { PostCreditPrediction } from "./PostCreditPrediction";
+export { FranchiseFuture } from "./FranchiseFuture";
