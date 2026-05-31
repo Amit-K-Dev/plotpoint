@@ -104,14 +104,23 @@ const aiWinner = compareWinner();
 const getBattleScore = (movie) => {
   const bs = movie?.result?.battle_strength;
 
-  if (!bs) return 0;
+  if (bs) {
+    return (
+      (bs.story || 0) +
+      (bs.visuals || 0) +
+      (bs.characters || 0) +
+      (bs.originality || 0) +
+      (bs.awards || 0)
+    );
+  }
+
+  const hype = movie?.result?.hype_breakdown;
 
   return (
-    bs.story +
-    bs.visuals +
-    bs.characters +
-    bs.originality +
-    bs.awards
+    (hype?.visuals || 0) +
+    (hype?.story || 0) +
+    (hype?.cast || 0) +
+    (hype?.originality || 0)
   );
 };
 
