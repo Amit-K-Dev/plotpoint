@@ -16,6 +16,7 @@ import {
   StrengthWeakness,
   HiddenClues,
   CharacterPredictions,
+  ForecastBoard,
 } from "@/components/analysis";
 import { AIChat } from "@/components/chat/AIChat";
 import { ANALYSIS_SECTIONS, EXTRA_SECTIONS, MAX_IMAGES } from "@/lib/constants";
@@ -122,6 +123,10 @@ export function AnalyzeTab() {
           <div style={{ fontSize: 9, color: "rgba(255,255,255,0.28)" }}>/100</div>
         </div>
       </div>
+
+<ForecastBoard
+  prediction={result.prediction_center}
+/>
 
       {result.hype_breakdown && (
   <HypeBreakdown breakdown={result.hype_breakdown} />
