@@ -20,6 +20,7 @@ import {
 WatchRecommendation,
 AwardsForecast,
 PostCreditPrediction,
+FranchiseFuture,
 } from "@/components/analysis";
 import { AIChat } from "@/components/chat/AIChat";
 import { ANALYSIS_SECTIONS, EXTRA_SECTIONS, MAX_IMAGES } from "@/lib/constants";
@@ -142,6 +143,10 @@ export function AnalyzeTab() {
 
 <PostCreditPrediction
   data={result.post_credit_prediction}
+/>
+
+<FranchiseFuture
+  data={result.franchise_future}
 />
 
 
