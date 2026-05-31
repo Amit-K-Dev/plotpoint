@@ -4,48 +4,23 @@ export function StrengthWeakness({
   strengths = [],
   weaknesses = [],
 }) {
-  if (!strengths.length && !weaknesses.length) return null;
-
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: 12,
-        marginBottom: 14,
-      }}
-    >
+    <div className="grid gap-3 mb-3">
       <div
         style={{
           background: "rgba(74,222,128,0.08)",
-          border: "1px solid rgba(74,222,128,0.18)",
-          borderRadius: 16,
-          padding: 16,
+          border: "1px solid rgba(74,222,128,0.2)",
+          borderRadius: 14,
+          padding: 14,
         }}
       >
-        <div
-          style={{
-            fontSize: 11,
-            letterSpacing: 3,
-            color: "#4ade80",
-            textTransform: "uppercase",
-            marginBottom: 12,
-          }}
-        >
+        <h4 style={{ color: "#4ade80", marginBottom: 10 }}>
           ✅ Strengths
-        </div>
+        </h4>
 
-        {strengths.map((item, i) => (
-          <div
-            key={i}
-            style={{
-              marginBottom: 10,
-              color: "rgba(255,255,255,0.75)",
-              fontSize: 13,
-              lineHeight: 1.6,
-            }}
-          >
-            • {item}
+        {strengths.map((s, i) => (
+          <div key={i} style={{ marginBottom: 8 }}>
+            • {s}
           </div>
         ))}
       </div>
@@ -53,34 +28,18 @@ export function StrengthWeakness({
       <div
         style={{
           background: "rgba(248,113,113,0.08)",
-          border: "1px solid rgba(248,113,113,0.18)",
-          borderRadius: 16,
-          padding: 16,
+          border: "1px solid rgba(248,113,113,0.2)",
+          borderRadius: 14,
+          padding: 14,
         }}
       >
-        <div
-          style={{
-            fontSize: 11,
-            letterSpacing: 3,
-            color: "#f87171",
-            textTransform: "uppercase",
-            marginBottom: 12,
-          }}
-        >
+        <h4 style={{ color: "#f87171", marginBottom: 10 }}>
           ⚠ Weaknesses
-        </div>
+        </h4>
 
-        {weaknesses.map((item, i) => (
-          <div
-            key={i}
-            style={{
-              marginBottom: 10,
-              color: "rgba(255,255,255,0.75)",
-              fontSize: 13,
-              lineHeight: 1.6,
-            }}
-          >
-            • {item}
+        {weaknesses.map((s, i) => (
+          <div key={i} style={{ marginBottom: 8 }}>
+            • {s}
           </div>
         ))}
       </div>
