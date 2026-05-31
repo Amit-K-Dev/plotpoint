@@ -19,6 +19,7 @@ import {
   ForecastBoard,
 WatchRecommendation,
 AwardsForecast,
+PostCreditPrediction,
 } from "@/components/analysis";
 import { AIChat } from "@/components/chat/AIChat";
 import { ANALYSIS_SECTIONS, EXTRA_SECTIONS, MAX_IMAGES } from "@/lib/constants";
@@ -131,13 +132,18 @@ export function AnalyzeTab() {
   data={result.watch_recommendation}
 />
 
+<ForecastBoard
+  prediction={result.prediction_center}
+/>
+
 <AwardsForecast
   data={result.awards_forecast}
 />
 
-<ForecastBoard
-  prediction={result.prediction_center}
+<PostCreditPrediction
+  data={result.post_credit_prediction}
 />
+
 
       {result.hype_breakdown && (
   <HypeBreakdown breakdown={result.hype_breakdown} />
