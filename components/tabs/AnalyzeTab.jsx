@@ -14,8 +14,8 @@ import {
   HypeBreakdown,
   PredictionCenter,
   StrengthWeakness,
-HiddenClues,
-CharacterPredictions,
+  HiddenClues,
+  CharacterPredictions,
 } from "@/components/analysis";
 import { AIChat } from "@/components/chat/AIChat";
 import { ANALYSIS_SECTIONS, EXTRA_SECTIONS, MAX_IMAGES } from "@/lib/constants";
