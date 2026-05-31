@@ -61,6 +61,46 @@ export function CompareTab() {
     </select>
   );
 
+const compareWinner = () => {
+  if (!a || !b) return null;
+
+  const scoreA =
+    (a.result?.score || 0) * 10 +
+    (a.result?.hype_score || 0);
+
+  const scoreB =
+    (b.result?.score || 0) * 10 +
+    (b.result?.hype_score || 0);
+
+  if (scoreA === scoreB) {
+    return {
+      winner: "Tie",
+      reason:
+        "Both trailers perform similarly across overall score and hype metrics.",
+    };
+  }
+
+  const winner = scoreA > scoreB ? a : b;
+  const loser = scoreA > scoreB ? b : a;
+
+  const diff = Math.abs(scoreA - scoreB);
+
+  let reason =
+    `${winner.title} shows stronger audience potential, trailer impact and overall momentum than ${loser.title}.`;
+
+  if (diff > 25) {
+    reason =
+      `${winner.title} significantly outperforms ${loser.title} in both quality and hype indicators.`;
+  }
+
+  return {
+    winner: winner.title,
+    reason,
+  };
+};
+
+const aiWinner = compareWinner();
+
   const metricRow = (label, va, vb, max) => {
     const win =
       va > vb
@@ -244,11 +284,72 @@ export function CompareTab() {
 
       {a && b && (
         <div>
+
+{aiWinner && (
+  <div
+    style={{
+      background: "rgba(74,222,128,0.08)",
+      border: "1px solid rgba(74,222,128,0.22)",
+      borderRadius: 14,
+      padding: "18px",
+      marginBottom: 16,
+    }}
+  >
+    <div
+      style={{
+        fontSize: 11,
+        letterSpacing: 3,
+        textTransform: "uppercase",
+        color: "#4ade80",
+        marginBottom: 8,
+      }}
+    >
+      🏆 AI Winner
+    </div>
+
+    <div
+      style={{
+        fontFamily: "'Bebas Neue',sans-serif",
+        fontSize: 26,
+        letterSpacing: 2,
+        color: "#ffffff",
+        marginBottom: 8,
+      }}
+    >
+      {aiWinner.winner}
+    </div>
+
+    <div
+      style={{
+        color: "rgba(255,255,255,0.72)",
+        lineHeight: 1.7,
+        fontSize: 13,
+      }}
+    >
+      {aiWinner.reason}
+    </div>
+  </div>
+)}
+
          
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 20 }}>
             {[a, b].map((h, idx) => (
               <div key={idx} style={{ background: `rgba(${idx === 0 ? "96,176,240" : "240,192,64"},0.07)`, border: `1px solid rgba(${idx === 0 ? "96,176,240" : "240,192,64"},0.2)`, borderRadius: 12, padding: "13px 15px", textAlign: "center" }}>
-                <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 15, letterSpacing: 1, color: "white", marginBottom: 5 }}>{h.title}</div>
+                <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 15, letterSpacing: 1, color: "white", marginBottom: 5 }}>{h.title}
+
+{aiWinner?.winner === h.title && (
+  <div
+    style={{
+      marginTop: 6,
+      fontSize: 10,
+      color: "#4ade80",
+      letterSpacing: 2,
+      textTransform: "uppercase",
+    }}
+  >
+    🏆 Winner
+  </div>
+)}</div>
                 <div style={{ fontSize: 11, color: "rgba(255,255,255,0.38)", fontFamily: "'DM Sans',sans-serif", fontStyle: "italic" }}>"{h.result?.tagline?.slice(0, 55)}…"</div>
               </div>
             ))}
