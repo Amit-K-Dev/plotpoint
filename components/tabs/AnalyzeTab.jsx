@@ -111,6 +111,58 @@ export function AnalyzeTab() {
         <ScoreRing score={result.score} />
         <div style={{ flex: 1, minWidth: 170 }}>
           <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 20, letterSpacing: 2, color: "white", marginBottom: 3 }}>{title || "Analysis"}</div>
+
+{result.verdict_badge && (
+  <div
+    style={{
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 6,
+      padding: "4px 10px",
+      borderRadius: 999,
+      marginBottom: 8,
+      marginTop: 4,
+      fontSize: 11,
+      fontWeight: 600,
+      background:
+        result.verdict_badge === "Must Watch"
+          ? "rgba(74,222,128,0.12)"
+          : result.verdict_badge === "Looks Promising"
+          ? "rgba(96,176,240,0.12)"
+          : result.verdict_badge === "Wait For Reviews"
+          ? "rgba(240,192,64,0.12)"
+          : "rgba(248,113,113,0.12)",
+      border: `1px solid ${
+        result.verdict_badge === "Must Watch"
+          ? "#4ade80"
+          : result.verdict_badge === "Looks Promising"
+          ? "#60b0f0"
+          : result.verdict_badge === "Wait For Reviews"
+          ? "#f0c040"
+          : "#f87171"
+      }`,
+      color:
+        result.verdict_badge === "Must Watch"
+          ? "#4ade80"
+          : result.verdict_badge === "Looks Promising"
+          ? "#60b0f0"
+          : result.verdict_badge === "Wait For Reviews"
+          ? "#f0c040"
+          : "#f87171",
+    }}
+  >
+    {result.verdict_badge === "Must Watch"
+      ? "🔥"
+      : result.verdict_badge === "Looks Promising"
+      ? "👍"
+      : result.verdict_badge === "Wait For Reviews"
+      ? "⚠️"
+      : "❌"}
+
+    {result.verdict_badge}
+  </div>
+)}
+
           <p style={{ margin: "0 0 9px", fontSize: 13.5, fontStyle: "italic", color: "rgba(255,255,255,0.65)", lineHeight: 1.5, fontWeight: 300 }}>"{result.tagline}"</p>
           {result.comps && (
             <div className="flex flex-wrap gap-1">
