@@ -101,6 +101,30 @@ const compareWinner = () => {
 
 const aiWinner = compareWinner();
 
+const getBattleScore = (movie) => {
+  const bs = movie?.result?.battle_strength;
+
+  if (!bs) return 0;
+
+  return (
+    bs.story +
+    bs.visuals +
+    bs.characters +
+    bs.originality +
+    bs.awards
+  );
+};
+
+const scoreA = getBattleScore(a);
+const scoreB = getBattleScore(b);
+
+const winner =
+  scoreA > scoreB
+    ? a
+    : scoreB > scoreA
+    ? b
+    : null;
+
   const metricRow = (label, va, vb, max) => {
     const win =
       va > vb
@@ -330,6 +354,49 @@ const aiWinner = compareWinner();
     </div>
   </div>
 )}
+
+<div
+  style={{
+    background: "rgba(240,192,64,0.08)",
+    border: "1px solid rgba(240,192,64,0.22)",
+    borderRadius: 14,
+    padding: "18px",
+    marginBottom: 16,
+  }}
+>
+  <div
+    style={{
+      fontSize: 11,
+      letterSpacing: 3,
+      textTransform: "uppercase",
+      color: "#f0c040",
+      marginBottom: 8,
+    }}
+  >
+    ⚔️ Battle Score
+  </div>
+
+  <div
+    style={{
+      fontFamily: "'Bebas Neue',sans-serif",
+      fontSize: 24,
+      color: "#ffffff",
+      letterSpacing: 2,
+      marginBottom: 8,
+    }}
+  >
+    {scoreA} vs {scoreB}
+  </div>
+
+  <div
+    style={{
+      color: "rgba(255,255,255,0.72)",
+      fontSize: 13,
+    }}
+  >
+    Winner: {winner?.title || "Tie"}
+  </div>
+</div>
 
          
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 20 }}>
