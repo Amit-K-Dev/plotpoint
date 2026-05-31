@@ -8,3 +8,4 @@ export { StrengthWeakness } from "./StrengthWeakness";
 export { HiddenClues } from "./HiddenClues";
 export { CharacterPredictions } from "./CharacterPredictions";
 export { ForecastBoard } from "./ForecastBoard";
+export { WatchRecommendation } from "./WatchRecommendation";
