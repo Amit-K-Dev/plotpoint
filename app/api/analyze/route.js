@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { generateWithFallback } from "@/lib/ai-provider";
 import { ANALYSIS_SYSTEM_PROMPT } from "@/lib/prompts";
 import { safeParseJSON } from "@/lib/utils";
+import {
+  getCache,
+  setCache,
+} from "@/lib/cache";
 
 export async function POST(req) {
   try {
@@ -40,6 +44,20 @@ Attached Images:
 ${images?.length || 0}
 `;
 
+const cacheKey = `analysis:${
+  youtubeUrl ||
+  title ||
+  JSON.stringify(images || [])
+}`;
+
+const cached = getCache(cacheKey);
+
+if (cached) {
+  console.log("Cache hit:", cacheKey);
+
+  return NextResponse.json(cached);
+}
+
     const raw = await generateWithFallback({
       prompt,
       systemPrompt: ANALYSIS_SYSTEM_PROMPT,
@@ -60,7 +78,13 @@ ${images?.length || 0}
       );
     }
 
-    return NextResponse.json(parsed);
+    setCache(
+  cacheKey,
+  parsed,
+  1440 // 24 hours
+);
+
+return NextResponse.json(parsed);
   } catch (err) {
     console.error("[/api/analyze]", err);
 
