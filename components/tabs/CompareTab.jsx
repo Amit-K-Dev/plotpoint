@@ -101,6 +101,92 @@ const compareWinner = () => {
 
 const aiWinner = compareWinner();
 
+const generateVerdict = () => {
+  if (!a || !b) return null;
+
+  const strengths = [];
+  const advantages = [];
+
+  const aBattle = a.result?.battle_strength;
+  const bBattle = b.result?.battle_strength;
+
+  const winnerMovie =
+    getBattleScore(a) > getBattleScore(b)
+      ? a
+      : b;
+
+  const loserMovie =
+    winnerMovie === a ? b : a;
+
+  const winnerBattle =
+    winnerMovie.result?.battle_strength;
+
+  const loserBattle =
+    loserMovie.result?.battle_strength;
+
+  if (
+    winnerBattle?.visuals >
+    loserBattle?.visuals
+  ) {
+    strengths.push(
+      `Better visuals (+${
+        winnerBattle.visuals -
+        loserBattle.visuals
+      })`
+    );
+  }
+
+  if (
+    winnerBattle?.awards >
+    loserBattle?.awards
+  ) {
+    strengths.push(
+      `Higher awards potential (+${
+        winnerBattle.awards -
+        loserBattle.awards
+      })`
+    );
+  }
+
+  if (
+    winnerBattle?.originality >
+    loserBattle?.originality
+  ) {
+    strengths.push(
+      `More originality (+${
+        winnerBattle.originality -
+        loserBattle.originality
+      })`
+    );
+  }
+
+  if (
+    loserBattle?.story >
+    winnerBattle?.story
+  ) {
+    advantages.push(
+      "Better story score"
+    );
+  }
+
+  if (
+    loserBattle?.characters >
+    winnerBattle?.characters
+  ) {
+    advantages.push(
+      "Stronger character appeal"
+    );
+  }
+
+  return {
+    winner: winnerMovie.title,
+    strengths,
+    advantages,
+  };
+};
+
+const verdict = generateVerdict();
+
 const getBattleScore = (movie) => {
   const bs = movie?.result?.battle_strength;
 
@@ -133,6 +219,88 @@ const winner =
     : scoreB > scoreA
     ? b
     : null;
+
+{verdict && (
+  <div
+    style={{
+      background:
+        "rgba(255,255,255,0.03)",
+      border:
+        "1px solid rgba(255,255,255,0.08)",
+      borderRadius: 14,
+      padding: "18px",
+      marginBottom: 16,
+    }}
+  >
+    <div
+      style={{
+        fontSize: 11,
+        letterSpacing: 3,
+        textTransform: "uppercase",
+        color: "#f0c040",
+        marginBottom: 12,
+      }}
+    >
+      🎬 Why {verdict.winner} Wins
+    </div>
+
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+      }}
+    >
+      {verdict.strengths.map(
+        (item, idx) => (
+          <div
+            key={idx}
+            style={{
+              color: "#4ade80",
+              fontSize: 13,
+            }}
+          >
+            ✓ {item}
+          </div>
+        )
+      )}
+    </div>
+
+    {verdict.advantages.length >
+      0 && (
+      <>
+        <div
+          style={{
+            marginTop: 16,
+            marginBottom: 8,
+            color: "#f87171",
+            fontSize: 11,
+            letterSpacing: 2,
+            textTransform:
+              "uppercase",
+          }}
+        >
+          ⚠ Opponent Advantages
+        </div>
+
+        {verdict.advantages.map(
+          (item, idx) => (
+            <div
+              key={idx}
+              style={{
+                color:
+                  "rgba(255,255,255,0.7)",
+                fontSize: 13,
+              }}
+            >
+              • {item}
+            </div>
+          )
+        )}
+      </>
+    )}
+  </div>
+)}
 
   const metricRow = (label, va, vb, max) => {
     const win =
