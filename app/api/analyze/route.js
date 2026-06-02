@@ -44,7 +44,7 @@ Attached Images:
 ${images?.length || 0}
 `;
 
-const cacheKey = `analysis:${
+const cacheKey = `v1-analysis:${
   youtubeUrl ||
   title ||
   JSON.stringify(images || [])
@@ -53,7 +53,9 @@ const cacheKey = `analysis:${
 const cached = getCache(cacheKey);
 
 if (cached) {
-  console.log("Cache hit:", cacheKey);
+  console.log(
+    `Cache hit: ${cacheKey}`
+  );
 
   return NextResponse.json(cached);
 }
@@ -81,7 +83,7 @@ if (cached) {
     setCache(
   cacheKey,
   parsed,
-  1440 // 24 hours
+  60 // 60 minutes
 );
 
 return NextResponse.json(parsed);
